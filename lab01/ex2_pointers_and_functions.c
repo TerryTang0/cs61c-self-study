@@ -1,16 +1,50 @@
 #include <stdio.h>
 
+void add_one(int input) {
+  input += 1;
+}
+
+// TODO: create a pointer to input
+void add_one_pointer(int *input) {
+  // TODO: add one to the integer that input points to
+  *input += 1;
+}
+
+// TODO: create a pointer to a pointer to input
+void add_one_double_ptr(int **input) {
+  // TODO: add one to the integer that input doubly points to
+   **input += 1;
+}
+
 int main() {
-    int my_var = 20;
-    int* my_var_p;
-    my_var_p = &my_var;
+  // Assign x (an integer) to 5
+  int x = 5;
 
-    printf("Address of my_var: %p\n", my_var_p);
-    printf("Address of my_var: %p\n", &my_var);
-    printf("Address of my_var_p: %p\n", &my_var_p);
+  // Call add_one on x
+  add_one(x);
 
-    *my_var_p += 2;
+  // This line should print 5
+  // Why doesn't this work?
+  printf("add_one: %d\n", x);
 
-    printf("my_var: %d\n", my_var);
-    printf("my_var: %d\n", *my_var_p);
+  // Let's try using add_one_pointer
+
+  // TODO: use add_one_pointer to increment x
+  // Hint: compare the type of x with the type of the argument
+  //       for add_one_pointer
+  add_one_pointer(&x);
+
+  // This line should print 6
+  printf("add_one_pointer: %d\n", x);
+  
+  // TODO: Let's save the pointer to x in y
+  int *y = &x;
+
+  // TODO: use add_one_double_ptr to increment x again, using the pointer we just made
+  add_one_double_ptr(&y);
+
+  // This line should print 7
+  printf("add_one_double_ptr: %d\n", x);
+
+  return 0;
 }

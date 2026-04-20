@@ -1,5 +1,5 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/terrysmac/cs61c-self-study/lab01/ex2_pointers_and_functions'
+binary-path:     '/Users/terrysmac/cs61c-self-study/fa25-lab-starter/lab01/ex2_pointers_and_functions'
 relocations:     []
 ...
