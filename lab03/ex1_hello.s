@@ -1,0 +1,11 @@
+.text
+
+addi a0 x0 1
+addi a1 x0 2025
+
+# This prints out the integer stored in a1
+ecall
+
+# This exits the program
+addi a0 x0 10
+ecall
