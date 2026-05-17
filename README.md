@@ -7,9 +7,3 @@ This repository contains my self-study work for UC Berkeley CS61C.
 - Git
 - Python 3
 - Java 17
-
-## Lab 0
-- Installed required tools
-- Set up Git & GitHub
-- Practiced FizzBuzz
-- Practiced resolving merge conflicts
