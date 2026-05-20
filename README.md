@@ -4,9 +4,12 @@ This repository contains my self-study work for UC Berkeley CS61C.
 
 ## Environment
 - macOS
+- VSCode
 - Git
-- Python 3
+- C
 - Java 17
+- LLDB (Used on macOS, instead of CGDB/GDB)
+- Venus RISC-V Simulator
 
 ## Lab Content
 - Lab01: C
