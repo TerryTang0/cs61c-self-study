@@ -16,32 +16,36 @@
 # =================================================================
 argmax:
     # Prologue
-    addi sp, sp, -4
+    addi sp, sp, -8
     sw ra, 0(sp)
+    sw s0, 4(sp)
     mv t0, a0    # t0 = a0
     li t1, 0    # t1 is the increment of the loop
-    li t2, 0    # t2 save the index of max element
-    lw t3, 0(a0)    # t3 keep the largest element
+    li t2, 0    # t2 saves the index of max element
+    lw t3, 0(a0)    # t3 keeps the largest element
+    bge x0, a1, loop_error
 
 loop_start:
-    bge x0, a1, loop_error
     bge t1, a1, loop_end
     lw t4, 0(t0)    # Load the element to be checked to t4
     bge t3, t4, loop_continue
-    mv t4, t3    # Update the max element
-    mv t1, t2    # Update the index of max element
+    mv t3, t4    # Update the max element
+    mv t2, t1    # Update the index of max element
     
-loop_error:
-    li a0, 36
-    j exit
-
+    
 loop_continue:
     addi t0, t0, 4
     addi t1, t1, 1
+    j loop_start
 
 loop_end:
     # Epilogue
+    lw s0, 4(sp)
     lw ra, 0(sp)
-    addi sp, sp, 4
-    mv t2, a0
+    addi sp, sp, 8
+    mv a0, t2
     jr ra
+
+loop_error:
+    li a0, 36
+    j exit
