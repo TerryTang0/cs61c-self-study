@@ -45,8 +45,8 @@ loop_start:
     add t1, t1, a1    # t1 = t1 + a1; t1 is the address of the element need to 
                         be calculated in second array
     
-    lw t0, 0(t0)    # Load the element value into t0
-    lw t1, 0(t1)    # Load the element value into t1
+    lw t0, 0(t0)    # Load the element value from first array into t0
+    lw t1, 0(t1)    # Load the element value from 2nd array into t1
 
     mul t3, t0, t1    # t3 = t0 * t1
     add t4, t4, t3    # t4 = t4 + t3; t4 is the sum of dots
