@@ -39,14 +39,14 @@ loop_start:
     mul t0, t2, a3    # t0 = t2 * a3
     slli t0, t0, 2    # t0 = t0 * 4; now t0 contains the offset now
     add t0, t0, a0    # t0 = t0 + a0; t0 is the address of the element need to 
-                        be calculated in first array
+                      # be calculated in first array
     mul t1, t2, a4    # t1 = t2 * a4
     slli t1, t1, 2    # t1 = t1 * 4
     add t1, t1, a1    # t1 = t1 + a1; t1 is the address of the element need to 
-                        be calculated in second array
+                      # be calculated in second array
     
-    lw t0, 0(t0)    # Load the element value from first array into t0
-    lw t1, 0(t1)    # Load the element value from 2nd array into t1
+    lw t0, 0(t0)    # Load the element value into t0
+    lw t1, 0(t1)    # Load the element value into t1
 
     mul t3, t0, t1    # t3 = t0 * t1
     add t4, t4, t3    # t4 = t4 + t3; t4 is the sum of dots
