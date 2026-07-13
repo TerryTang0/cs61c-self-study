@@ -26,15 +26,22 @@
 matmul:
 
     # Error checks
-    bge x0, a1, error
-    bge x0, a2, error
-    bge x0, a4, error
-    bge x0, a5, error
+    bge x0, a1, error    # If 0 >= a1, go to error
+    bge x0, a2, error    # If 0 >= a2, go to error
+    bge x0, a4, error    # If 0 >= a4, go to error
+    bge x0, a5, error    # If 0 >= a5, go to error
+    bne a2, a5, error    # If a2 != a5, goto error
 
 
     # Prologue
     addi sp, sp, -4
     sw ra, 0(sp)
+    
+    li t0, 0    # Initialize the number of row in matrix A
+    li t1, 0    # Initialize the number of column in matrix B
+    li t2, 0    # t2 = 0; store address of array in matrix A 
+    li t3, 0    # (can be removed) t3 = 0; store address of array in matrix B
+    
 
 
 outer_loop_start:
@@ -44,12 +51,61 @@ outer_loop_start:
 
 inner_loop_start:
 
+    blt a5, t1, inner_loop_end    # If a5 < t1, go to inner_loop_end
+
+    add t3, x0, t1    # t3 = t3 + t1
+    slli t3, t3, 2    # t3 = t3 * 4
+    add t3, t3, a3    # t3 = t3 + a3
 
 
+    # Set calling convention for register a0~a6
+    addi sp, sp, -44
+    sw a0, 0(sp)
+    sw a1, 4(sp)
+    sw a2, 8(sp)
+    sw a3, 12(sp)
+    sw a4, 16(sp)
+    sw a5, 20(sp)
+    sw a6, 24(sp)
+    sw t0, 28(sp)
+    sw t1, 32(sp)
+    sw t3, 36(sp)
+    sw t4, 40(sp)
 
+    mv a0, t2    # Move t2 to a0
+    mv a1, t3    # Move a3 to a1
+    li a3, 1    # a3 = 1
+    mv a4, a5    # Move a5 to a4; In second matrix, stride = width
 
+    jal ra, dot    # Call dot.s
 
+    mv t6, a0    # t6 = a0
 
+    lw t4, 40(sp)
+    lw t3, 36(sp)
+    lw t1, 32(sp)
+    lw t0, 28(sp)
+    lw a6, 24(sp)
+    lw a5, 20(sp)
+    lw a4, 16(sp)
+    lw a3, 12(sp)
+    lw a2, 8(sp)
+    lw a1, 4(sp)
+    lw a0, 0(sp)
+    addi sp, sp, 44
+
+    mul t5, t0, a2    # t5 = t0 * a2
+    add t5, t5, t1    # t5 = t5 + t1
+    slli t5, t5, 2    # t5 = t5 * 4
+
+    add t5, t5, a6    # t5 = t5 + a6; t5 is the address to store the product
+    lw t6, 0(t5)
+
+    addi t1, t1, 1    # Increment the column by 1
+
+    j inner_loop_start
+
+    
 
 
 
@@ -57,6 +113,7 @@ inner_loop_start:
 
 inner_loop_end:
 
+    j exit
 
 
 
