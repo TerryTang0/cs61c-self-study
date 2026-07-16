@@ -46,17 +46,11 @@ matmul:
 
 outer_loop_start:
 
-
-
-
-inner_loop_start:
-
-    blt a5, t1, inner_loop_end    # If a5 < t1, go to inner_loop_end
-
-    add t3, x0, t1    # t3 = t3 + t1
-    slli t3, t3, 2    # t3 = t3 * 4
-    add t3, t3, a3    # t3 = t3 + a3
-
+    blt a1, t0, outer_loop_end
+    
+    add t2, x0, t0    # t2 = x0 + t0
+    slli t2, t2, 2    # t2 = t2 * 4
+    add t2, t2, a0    # t2 = t2 + a0
 
     # Set calling convention for register a0~a6
     addi sp, sp, -44
@@ -72,14 +66,7 @@ inner_loop_start:
     sw t3, 36(sp)
     sw t4, 40(sp)
 
-    mv a0, t2    # Move t2 to a0
-    mv a1, t3    # Move a3 to a1
-    li a3, 1    # a3 = 1
-    mv a4, a5    # Move a5 to a4; In second matrix, stride = width
-
-    jal ra, dot    # Call dot.s
-
-    mv t6, a0    # t6 = a0
+    j inner_loop_start    # Not sure if I should use j or jal here. Need to check
 
     lw t4, 40(sp)
     lw t3, 36(sp)
@@ -93,6 +80,26 @@ inner_loop_start:
     lw a1, 4(sp)
     lw a0, 0(sp)
     addi sp, sp, 44
+
+
+inner_loop_start:
+
+    blt a5, t1, inner_loop_end    # If a5 < t1, go to inner_loop_end
+
+    add t3, x0, t1    # t3 = t3 + t1
+    slli t3, t3, 2    # t3 = t3 * 4
+    add t3, t3, a3    # t3 = t3 + a3
+
+
+    mv a0, t2    # Move t2 to a0
+    mv a1, t3    # Move a3 to a1
+    li a3, 1    # a3 = 1
+    mv a4, a5    # Move a5 to a4; In second matrix, stride = width
+
+    jal ra, dot    # Call dot.s
+
+    mv t6, a0    # t6 = a0
+
 
     mul t5, t0, a2    # t5 = t0 * a2
     add t5, t5, t1    # t5 = t5 + t1
