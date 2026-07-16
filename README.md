@@ -19,3 +19,4 @@ This repository contains my self-study work for UC Berkeley CS61C.
 
 ## Project Content
 - Proj01: Snek game
+- Proj02: Neural network classifier
