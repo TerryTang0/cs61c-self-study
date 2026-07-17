@@ -1,6 +1,7 @@
 # CS61C Self Study (Fall 2025)
 
 This repository contains my self-study work for UC Berkeley CS61C.
+https://inst.eecs.berkeley.edu/~cs61c/archive/fa25/
 
 ## Environment
 - macOS
