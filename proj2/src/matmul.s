@@ -37,8 +37,8 @@ matmul:
     addi sp, sp, -4
     sw ra, 0(sp)
     
-    li t0, 0    # Initialize the number of row in matrix A
-    li t1, 0    # Initialize the number of column in matrix B
+    li s1, 0    # Initialize the number of row in matrix A
+    li s2, 0    # Initialize the number of column in matrix B
     li t2, 0    # t2 = 0; store address of array in matrix A 
     li t3, 0    # (can be removed) t3 = 0; store address of array in matrix B
     
@@ -46,14 +46,14 @@ matmul:
 
 outer_loop_start:
 
-    blt a1, t0, outer_loop_end
+    blt a1, s1, outer_loop_end
     
-    add t2, x0, t0    # t2 = x0 + t0
+    add t2, x0, s1    # t2 = x0 + s1
     slli t2, t2, 2    # t2 = t2 * 4
     add t2, t2, a0    # t2 = t2 + a0
 
     # Set calling convention for register a0~a6
-    addi sp, sp, -44
+    addi sp, sp, -36
     sw a0, 0(sp)
     sw a1, 4(sp)
     sw a2, 8(sp)
@@ -61,17 +61,13 @@ outer_loop_start:
     sw a4, 16(sp)
     sw a5, 20(sp)
     sw a6, 24(sp)
-    sw t0, 28(sp)
-    sw t1, 32(sp)
-    sw t3, 36(sp)
-    sw t4, 40(sp)
+    sw t3, 28(sp)
+    sw t4, 32(sp)
 
     j inner_loop_start    # Not sure if I should use j or jal here. Need to check
 
-    lw t4, 40(sp)
-    lw t3, 36(sp)
-    lw t1, 32(sp)
-    lw t0, 28(sp)
+    lw t4, 32(sp)
+    lw t3, 28(sp)
     lw a6, 24(sp)
     lw a5, 20(sp)
     lw a4, 16(sp)
@@ -79,14 +75,24 @@ outer_loop_start:
     lw a2, 8(sp)
     lw a1, 4(sp)
     lw a0, 0(sp)
-    addi sp, sp, 44
+    addi sp, sp, 36
 
 
 inner_loop_start:
 
-    blt a5, t1, inner_loop_end    # If a5 < t1, go to inner_loop_end
+    # Set calling convention for s1 & s2
+    addi sp, sp, -8
+    sw s1, 0(sp)
+    sw s2, 4(sp)
 
-    add t3, x0, t1    # t3 = t3 + t1
+    j inner_loop_run
+
+
+inner_loop_run:
+
+    blt a5, s2, inner_loop_end    # If a5 < s2, go to inner_loop_end
+
+    add t3, x0, s2    # t3 = t3 + s2
     slli t3, t3, 2    # t3 = t3 * 4
     add t3, t3, a3    # t3 = t3 + a3
 
@@ -101,24 +107,26 @@ inner_loop_start:
     mv t6, a0    # t6 = a0
 
 
-    mul t5, t0, a2    # t5 = t0 * a2
-    add t5, t5, t1    # t5 = t5 + t1
+    mul t5, s1, a2    # t5 = s1 * a2
+    add t5, t5, s2    # t5 = t5 + s2
     slli t5, t5, 2    # t5 = t5 * 4
 
     add t5, t5, a6    # t5 = t5 + a6; t5 is the address to store the product
     lw t6, 0(t5)
 
-    addi t1, t1, 1    # Increment the column by 1
+    addi s2, s2, 1    # Increment the column by 1
 
-    j inner_loop_start
+    j inner_loop_run
 
     
 
 
 
-
-
 inner_loop_end:
+
+    lw s2, 4(sp)
+    lw s1, 0(sp)
+    addi sp, sp, 8
 
     j exit
 
