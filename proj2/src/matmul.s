@@ -34,8 +34,10 @@ matmul:
 
 
     # Prologue
-    addi sp, sp, -4
+    addi sp, sp, -12
     sw ra, 0(sp)
+    sw s1, 4(sp)
+    sw s2, 8(sp)
     
     li s1, 0    # Initialize the number of row in matrix A
     li s2, 0    # Initialize the number of column in matrix B
@@ -61,13 +63,15 @@ outer_loop_start:
     sw a4, 16(sp)
     sw a5, 20(sp)
     sw a6, 24(sp)
-    sw t3, 28(sp)
-    sw t4, 32(sp)
+    sw t2, 28(sp)
+    sw t3, 32(sp)
+    sw t4, 36(sp)
 
     j inner_loop_start    # Not sure if I should use j or jal here. Need to check
 
-    lw t4, 32(sp)
-    lw t3, 28(sp)
+    lw t4, 36(sp)
+    lw t3, 32(sp)
+    lw t2, 28(sp)
     lw a6, 24(sp)
     lw a5, 20(sp)
     lw a4, 16(sp)
@@ -136,6 +140,10 @@ outer_loop_end:
 
 
     # Epilogue
+    lw s2, 8(sp)
+    lw s1, 4(sp)
+    lw ra, 0(sp)
+    addi sp, sp, 12
 
 
     jr ra
