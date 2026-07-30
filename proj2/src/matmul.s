@@ -30,7 +30,7 @@ matmul:
     bge x0, a2, error    # If 0 >= a2, go to error
     bge x0, a4, error    # If 0 >= a4, go to error
     bge x0, a5, error    # If 0 >= a5, go to error
-    bne a2, a5, error    # If a2 != a5, goto error
+    bne a2, a4, error    # If a2 != a4, go to error
 
 
     # Prologue
@@ -54,32 +54,8 @@ outer_loop_start:
     slli t2, t2, 2    # t2 = t2 * 4
     add t2, t2, a0    # t2 = t2 + a0
 
-    # Set calling convention for register a0~a6
-    addi sp, sp, -36
-    sw a0, 0(sp)
-    sw a1, 4(sp)
-    sw a2, 8(sp)
-    sw a3, 12(sp)
-    sw a4, 16(sp)
-    sw a5, 20(sp)
-    sw a6, 24(sp)
-    sw t2, 28(sp)
-    sw t3, 32(sp)
-    sw t4, 36(sp)
-
     j inner_loop_start    # Not sure if I should use j or jal here. Need to check
 
-    lw t4, 36(sp)
-    lw t3, 32(sp)
-    lw t2, 28(sp)
-    lw a6, 24(sp)
-    lw a5, 20(sp)
-    lw a4, 16(sp)
-    lw a3, 12(sp)
-    lw a2, 8(sp)
-    lw a1, 4(sp)
-    lw a0, 0(sp)
-    addi sp, sp, 36
 
 
 inner_loop_start:
@@ -106,7 +82,32 @@ inner_loop_run:
     li a3, 1    # a3 = 1
     mv a4, a5    # Move a5 to a4; In second matrix, stride = width
 
+    # Set calling convention for register a0~a6
+    addi sp, sp, -40
+    sw a0, 0(sp)
+    sw a1, 4(sp)
+    sw a2, 8(sp)
+    sw a3, 12(sp)
+    sw a4, 16(sp)
+    sw a5, 20(sp)
+    sw a6, 24(sp)
+    sw t2, 28(sp)
+    sw t3, 32(sp)
+    sw t4, 36(sp)
+
     jal ra, dot    # Call dot.s
+
+    lw t4, 36(sp)
+    lw t3, 32(sp)
+    lw t2, 28(sp)
+    lw a6, 24(sp)
+    lw a5, 20(sp)
+    lw a4, 16(sp)
+    lw a3, 12(sp)
+    lw a2, 8(sp)
+    lw a1, 4(sp)
+    lw a0, 0(sp)
+    addi sp, sp, 40
 
     mv t6, a0    # t6 = a0
 
@@ -152,3 +153,4 @@ outer_loop_end:
 
 error:
     li a0, 38
+    j exit
