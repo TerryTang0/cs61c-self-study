@@ -50,7 +50,7 @@ outer_loop_start:
  
     li s2, 0     # Reset s2
 
-    blt a1, s1, outer_loop_end
+    bge s1, a1, outer_loop_end
 
     # update the address of the first elements in the target row in matrix A into t2
     add t2, x0, s1    # t2 = x0 + s1
@@ -64,7 +64,7 @@ outer_loop_start:
 
 inner_loop_start:
 
-    blt a5, s2, inner_loop_end    # If a5 < s2, go to inner_loop_end
+    bge s2, a5, inner_loop_end    # If s2 >= a5, go to inner_loop_end
 
     add t3, x0, s2    # t3 = s2
     slli t3, t3, 2    # t3 = t3 * 4
@@ -73,15 +73,16 @@ inner_loop_start:
 
     # Set calling convention for register a0~a6
     addi sp, sp, -40
-    sw a1, 0(sp)
-    sw a2, 4(sp)
-    sw a3, 8(sp)
-    sw a4, 12(sp)
-    sw a5, 16(sp)
-    sw a6, 20(sp)
-    sw t2, 24(sp)
-    sw t3, 28(sp)
-    sw t4, 32(sp)
+    sw a0, 0(sp)
+    sw a1, 4(sp)
+    sw a2, 8(sp)
+    sw a3, 12(sp)
+    sw a4, 16(sp)
+    sw a5, 20(sp)
+    sw a6, 24(sp)
+    sw t2, 28(sp)
+    sw t3, 32(sp)
+    sw t4, 36(sp)
 
     mv a0, t2    # Move t2 to a0
     mv a1, t3    # Move t3 to a1
@@ -92,15 +93,16 @@ inner_loop_start:
 
     mv t6, a0    # t6 = a0
 
-    lw t4, 32(sp)
-    lw t3, 28(sp)
-    lw t2, 24(sp)
-    lw a6, 20(sp)
-    lw a5, 16(sp)
-    lw a4, 12(sp)
-    lw a3, 8(sp)
-    lw a2, 4(sp)
-    lw a1, 0(sp)
+    lw t4, 36(sp)
+    lw t3, 32(sp)
+    lw t2, 28(sp)
+    lw a6, 24(sp)
+    lw a5, 20(sp)
+    lw a4, 16(sp)
+    lw a3, 12(sp)
+    lw a2, 8(sp)
+    lw a1, 4(sp)
+    lw a0, 0(sp)
     addi sp, sp, 40
 
     mul t5, s1, a5    # t5 = s1 * a2
