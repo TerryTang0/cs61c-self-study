@@ -42,15 +42,19 @@ matmul:
     li s1, 0    # Initialize the number of row in matrix A
     li s2, 0    # Initialize the number of column in matrix B
     li t2, 0    # t2 = 0; store address of array in matrix A 
-    li t3, 0    # (can be removed) t3 = 0; store address of array in matrix B
+    li t3, 0    # t3 = 0; store address of array in matrix B
     
 
 
 outer_loop_start:
+ 
+    li s2, 0     # Reset s2
 
     blt a1, s1, outer_loop_end
-    
+
+    # update the address of the first elements in the target row in matrix A into t2
     add t2, x0, s1    # t2 = x0 + s1
+    mul t2, t2, a2    # t2 = t2 + a2
     slli t2, t2, 2    # t2 = t2 * 4
     add t2, t2, a0    # t2 = t2 + a0
 
@@ -60,81 +64,67 @@ outer_loop_start:
 
 inner_loop_start:
 
-    # Set calling convention for s1 & s2
-    addi sp, sp, -8
-    sw s1, 0(sp)
-    sw s2, 4(sp)
-
-    j inner_loop_run
-
-
-inner_loop_run:
-
     blt a5, s2, inner_loop_end    # If a5 < s2, go to inner_loop_end
 
-    add t3, x0, s2    # t3 = t3 + s2
+    add t3, x0, s2    # t3 = s2
     slli t3, t3, 2    # t3 = t3 * 4
     add t3, t3, a3    # t3 = t3 + a3
 
 
+    # Set calling convention for register a0~a6
+    addi sp, sp, -40
+    sw a1, 0(sp)
+    sw a2, 4(sp)
+    sw a3, 8(sp)
+    sw a4, 12(sp)
+    sw a5, 16(sp)
+    sw a6, 20(sp)
+    sw t2, 24(sp)
+    sw t3, 28(sp)
+    sw t4, 32(sp)
+
     mv a0, t2    # Move t2 to a0
-    mv a1, t3    # Move a3 to a1
+    mv a1, t3    # Move t3 to a1
     li a3, 1    # a3 = 1
     mv a4, a5    # Move a5 to a4; In second matrix, stride = width
 
-    # Set calling convention for register a0~a6
-    addi sp, sp, -40
-    sw a0, 0(sp)
-    sw a1, 4(sp)
-    sw a2, 8(sp)
-    sw a3, 12(sp)
-    sw a4, 16(sp)
-    sw a5, 20(sp)
-    sw a6, 24(sp)
-    sw t2, 28(sp)
-    sw t3, 32(sp)
-    sw t4, 36(sp)
-
     jal ra, dot    # Call dot.s
-
-    lw t4, 36(sp)
-    lw t3, 32(sp)
-    lw t2, 28(sp)
-    lw a6, 24(sp)
-    lw a5, 20(sp)
-    lw a4, 16(sp)
-    lw a3, 12(sp)
-    lw a2, 8(sp)
-    lw a1, 4(sp)
-    lw a0, 0(sp)
-    addi sp, sp, 40
 
     mv t6, a0    # t6 = a0
 
+    lw t4, 32(sp)
+    lw t3, 28(sp)
+    lw t2, 24(sp)
+    lw a6, 20(sp)
+    lw a5, 16(sp)
+    lw a4, 12(sp)
+    lw a3, 8(sp)
+    lw a2, 4(sp)
+    lw a1, 0(sp)
+    addi sp, sp, 40
 
-    mul t5, s1, a2    # t5 = s1 * a2
+    mul t5, s1, a5    # t5 = s1 * a2
     add t5, t5, s2    # t5 = t5 + s2
     slli t5, t5, 2    # t5 = t5 * 4
 
     add t5, t5, a6    # t5 = t5 + a6; t5 is the address to store the product
-    lw t6, 0(t5)
+    sw t6, 0(t5)
 
     addi s2, s2, 1    # Increment the column by 1
 
-    j inner_loop_run
-
-    
-
+    j inner_loop_start
 
 
 inner_loop_end:
 
-    lw s2, 4(sp)
-    lw s1, 0(sp)
-    addi sp, sp, 8
 
-    j exit
+    j outer_loop_repeat
 
+
+outer_loop_repeat:
+
+    addi s1, s1, 1
+    j outer_loop_start
 
 
 outer_loop_end:
