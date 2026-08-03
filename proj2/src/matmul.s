@@ -119,7 +119,6 @@ inner_loop_start:
 
 inner_loop_end:
 
-
     j outer_loop_repeat
 
 
@@ -130,7 +129,6 @@ outer_loop_repeat:
 
 
 outer_loop_end:
-
 
     # Epilogue
     lw s2, 8(sp)
@@ -144,5 +142,6 @@ outer_loop_end:
 
 
 error:
+
     li a0, 38
     j exit
