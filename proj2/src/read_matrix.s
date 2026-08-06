@@ -27,9 +27,15 @@
 read_matrix:
 
     # Prologue
+    addi sp, sp -12
+    sw s0, 0(sp)
+    sw s1, 4(sp)
+    sw s2, 8(sp)
+    sw s3, 12(sp)
+    sw s4, 16(sp)
 
-    mv s1, a1   # s1 = a1
-    mv s2, a2   # s2 = a2
+    mv s1, a1   # s1 = a1; s1 stores the row pointer
+    mv s2, a2   # s2 = a2; s2 stores the column pointer
 
     # Call fopen
     jal ra, fopen   # call fopen
@@ -39,20 +45,28 @@ read_matrix:
     beq a0, t0, fopen_error
     mv s0, a0   # s0 = a0
 
+    # Call fread. Retrieve the number of rows and columns
+    # Read rows
+    mv a0, s0
+    mv a1, s1
+    li a2, 4
+    jal ra, fread   # do we need an 'end of file' label?
+
+
     # Calculate the allocation
     li t1, 0    # t0 = 1
     lw t1, 0(s1)    # t1 store the number of rows
     lw t2, 0(s2)    # t2 store the number of columns
     mul t1, t1, t2  # t1 = t1 * t2
-    slli s3, t1, 2   # s3 = t1 * 4
+    slli s3, t1, 2   # s3 = t1 * 4; s3 store the number of bytes that we want to allocate
 
     # Call malloc. Make allocation
-    mv a0, t1   # a0 = t1
+    mv a0, s3   # a0 = s3
     jal ra, malloc
 
     li t0, 0    # t0 = 0
     beq a0, t0, malloc_error
-    mv s4, a0   # s4 = a0; s3 saves pointer to the allocated memory
+    mv s4, a0   # s4 = a0; s4 saves the pointer to allocated memory
 
     # Call fread. Read matrix
     mv a0, s0   # a0 = s0
@@ -62,7 +76,8 @@ read_matrix:
 
     # Restore registers after the next step
     bne a0, s3, fread_error
-    
+
+
 
 
 
