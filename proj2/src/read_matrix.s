@@ -27,21 +27,24 @@
 read_matrix:
 
     # Prologue
-    addi sp, sp -12
-    sw s0, 0(sp)
-    sw s1, 4(sp)
-    sw s2, 8(sp)
-    sw s3, 12(sp)
-    sw s4, 16(sp)
+    addi sp, sp, -32
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
+    sw s3, 16(sp)
+    sw s4, 20(sp)
+    sw s5, 24(sp)
+    sw s6, 28(sp)
 
     mv s1, a1   # s1 = a1; s1 stores the row pointer
     mv s2, a2   # s2 = a2; s2 stores the column pointer
 
     # Call fopen
+    li a1, 0    # a1 = 0
     jal ra, fopen   # call fopen
 
     li t0, -1   # t0 = -1
-    li a1, 0    # a1 = 0; need to confirm
     beq a0, t0, fopen_error
     mv s0, a0   # s0 = a0
 
@@ -51,14 +54,24 @@ read_matrix:
     mv a1, s1
     li a2, 4
     jal ra, fread   # do we need an 'end of file' label?
+    li t0, 4    # t0 = 4
+    bne a0, t0, fread_error
+    lw s5, 0(s1)   # s5 = a0; s5 stores the number of rows in the matrix
+
+    # Read columns
+    mv a0, s0
+    mv a1, s2
+    li a2, 4
+    jal ra, fread 
+    li t0, 4
+    bne a0, t0, fread_error
+    lw s6, 0(s2)   # s6 = a0; s6 stores the number of columns in the matrix
+
 
 
     # Calculate the allocation
-    li t1, 0    # t0 = 1
-    lw t1, 0(s1)    # t1 store the number of rows
-    lw t2, 0(s2)    # t2 store the number of columns
-    mul t1, t1, t2  # t1 = t1 * t2
-    slli s3, t1, 2   # s3 = t1 * 4; s3 store the number of bytes that we want to allocate
+    mul s3, s5, s6  # s3 = s5 * s6
+    slli s3, s3, 2   # s3 = s3 * 4; s3 store the number of bytes that we want to allocate
 
     # Call malloc. Make allocation
     mv a0, s3   # a0 = s3
@@ -77,17 +90,26 @@ read_matrix:
     # Restore registers after the next step
     bne a0, s3, fread_error
 
-
-
-
-
-
+    # Call fclose
+    mv a0, s0   # a0 = s0
+    jal ra, fclose
+    bne a0, x0, fclose_error
 
 
 
     # Epilogue
+    mv a0, s4
 
-
+    lw s6, 28(sp)
+    lw s5, 24(sp)
+    lw s4, 20(sp)
+    lw s3, 16(sp)
+    lw s2, 12(sp)
+    lw s1, 8(sp)
+    lw s0, 4(sp)
+    lw ra, 0(sp)
+    addi sp, sp, 32
+    
     jr ra
 
 
@@ -106,4 +128,10 @@ malloc_error:
 fread_error:
 
     li a0, 29
+    j exit
+
+
+fclose_error:
+
+    li a0, 28
     j exit
