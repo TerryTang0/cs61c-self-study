@@ -25,14 +25,19 @@
 write_matrix:
 
     # Prologue
-    addi sp, sp, 
+    addi sp, sp, -20
     sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
+    sw s3, 16(sp)
 
-    mv s1, a1   # s1 = a1
-    mv s2, a2   # s2 = a2
+    mv s1, a1   # s1 = a1; s1 stores the address of the matrix
+    mv s2, a2   # s2 = a2; s2 stores the number of rows in the matrix
+    mv s3, a3   # s3 = a3; s3 stores the number of columns in the matrix
 
     # Call fopen
-    li a0, 1
+    li a1, 1
     jal ra, fopen
 
     li t0, -1
@@ -41,14 +46,82 @@ write_matrix:
 
     # Call fwrite. Write the number of rows
     mv a0, s0
+    addi sp, sp -4
+    sw s2, 0(sp)
+
+    mv a1, sp
+    li a2, 1
+    li a3, 4
+    jal ra, fwrite
+    li t0, 1
+    bne a0, t0, fwrite_error
+
+    lw s2, 0(sp)
+    addi sp, sp, 4
+
+
+    # Call fwrite. Write the number of columns
+    mv a0, s0
+    addi sp, sp -4
+    sw s3, 0(sp)
+
+    mv a1, sp
+    li a2, 1
+    li a3, 4
+    jal ra, fwrite
+    li t0, 1
+    bne a0, t0, fwrite_error
+
+    lw s3, 0(sp)
+    addi sp, sp, 4
+
+    # Call fwrite. Write the data to the file
+    mv a0, s0
+    mv a1, s1
+    mul a2, s2, s3
+    li a3, 4
+
+    addi sp, sp, -4
+    sw a2, 0(sp)
+
+    jal ra, fwrite
     
+    lw a2, 0(sp)
+    addi sp, sp, 4
+    bne a0, a2, fwrite_error
 
-
+    # Call fclose
+    mv a0, s0
+    jal ra, fclose
+    bne a0, x0, fclose_error
 
 
 
 
     # Epilogue
-
+    lw s3, 16(sp)
+    lw s2, 12(sp)
+    lw s1, 8(sp)
+    lw s0, 4(sp)
+    lw ra, 0(sp)
+    addi sp, sp, 20
 
     jr ra
+
+
+fopen_error:
+
+    li a0, 27
+    j exit
+
+
+fwrite_error:
+
+    li a0, 30
+    j exit
+
+
+fclose_error:
+
+    li a0, 28
+    j exit
