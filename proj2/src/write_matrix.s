@@ -25,9 +25,23 @@
 write_matrix:
 
     # Prologue
+    addi sp, sp, 
+    sw ra, 0(sp)
 
+    mv s1, a1   # s1 = a1
+    mv s2, a2   # s2 = a2
 
+    # Call fopen
+    li a0, 1
+    jal ra, fopen
 
+    li t0, -1
+    beq a0, t0, fopen_error
+    mv s0, a0   # s0 = a0; s0 stores file descriptor
+
+    # Call fwrite. Write the number of rows
+    mv a0, s0
+    
 
 
 
