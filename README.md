@@ -17,6 +17,7 @@ https://inst.eecs.berkeley.edu/~cs61c/archive/fa25/
 - Lab02: C Debugging
 - Lab03: RISC-V, Venus
 - Lab04: RISC-V, Calling Convention
+- Lab05: Logisim
 
 ## Project Content
 - Proj01: Snek game
