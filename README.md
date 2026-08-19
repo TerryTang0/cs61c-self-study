@@ -20,5 +20,6 @@ https://inst.eecs.berkeley.edu/~cs61c/archive/fa25/
 - Lab05: Logisim
 
 ## Project Content
-- Proj01: Snek game
-- Proj02: Neural network classifier
+- Project 1: Snek game
+- Project 2: Neural network classifier
+- Project 3: CPU
