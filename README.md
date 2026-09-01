@@ -6,6 +6,7 @@ I mainly use the Spring 2021 lecture videos and lecture slides and review the Fa
 
 Video Lecture:
 https://inst.eecs.berkeley.edu/~cs61c/archive/sp21/
+
 Lab, project & discussion I work on:
 https://inst.eecs.berkeley.edu/~cs61c/archive/fa25/
 
