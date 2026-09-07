@@ -3626,7 +3626,7 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(750,1570)" name="Constant">
-      <a name="value" val="0x4"/>
+      <a name="value" val="0x0"/>
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(750,1620)" name="Splitter">
@@ -4818,12 +4818,12 @@
 </a>
       <a name="dataWidth" val="16"/>
     </comp>
-    <comp lib="5" loc="(1294,1598)" name="Text">
+    <comp lib="5" loc="(1290,1595)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="B-format"/>
     </comp>
-    <comp lib="5" loc="(1301,899)" name="Text">
+    <comp lib="5" loc="(1300,895)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="S-format"/>
@@ -4831,31 +4831,31 @@
     <comp lib="5" loc="(170,90)" name="Text">
       <a name="text" val="INPUTS to your circuit"/>
     </comp>
-    <comp lib="5" loc="(1811,1149)" name="Text">
+    <comp lib="5" loc="(1810,1145)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="J-format"/>
     </comp>
-    <comp lib="5" loc="(1811,1309)" name="Text">
+    <comp lib="5" loc="(1810,1305)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="jalr"/>
     </comp>
-    <comp lib="5" loc="(1821,909)" name="Text">
+    <comp lib="5" loc="(1820,905)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="U-format"/>
     </comp>
-    <comp lib="5" loc="(199,390)" name="Text">
+    <comp lib="5" loc="(195,390)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="text" val="Connect ROM Input here -&gt;"/>
     </comp>
-    <comp lib="5" loc="(2545,84)" name="Text">
+    <comp lib="5" loc="(2545,80)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="PC Select"/>
     </comp>
-    <comp lib="5" loc="(289,887)" name="Text">
+    <comp lib="5" loc="(285,885)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="R-format"/>
@@ -4892,7 +4892,7 @@
     <comp lib="5" loc="(670,140)" name="Text">
       <a name="text" val="OUTPUT from your circuit"/>
     </comp>
-    <comp lib="5" loc="(810,894)" name="Text">
+    <comp lib="5" loc="(810,890)" name="Text">
       <a name="color" val="#0000eb"/>
       <a name="font" val="SansSerif plain 17"/>
       <a name="text" val="I-format"/>
@@ -5347,8 +5347,7 @@
     <wire from="(60,100)" to="(60,230)"/>
     <wire from="(60,230)" to="(100,230)"/>
     <wire from="(620,210)" to="(620,230)"/>
-    <wire from="(620,480)" to="(620,490)"/>
-    <wire from="(620,600)" to="(620,620)"/>
+    <wire from="(620,480)" to="(620,620)"/>
     <wire from="(620,620)" to="(660,620)"/>
     <wire from="(640,230)" to="(650,230)"/>
     <wire from="(670,210)" to="(670,230)"/>

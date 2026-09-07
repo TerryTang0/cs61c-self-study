@@ -39,12 +39,12 @@
       <a name="font" val="SansSerif plain 12"/>
     </tool>
   </lib>
-  <lib desc="file#partial-load.circ" name="6"/>
+  <lib desc="file#partial-store.circ" name="6"/>
   <lib desc="file#alu.circ" name="7"/>
-  <lib desc="file#branch-comp.circ" name="8"/>
-  <lib desc="file#regfile.circ" name="9"/>
-  <lib desc="file#imm-gen.circ" name="10"/>
-  <lib desc="file#partial-store.circ" name="11"/>
+  <lib desc="file#regfile.circ" name="8"/>
+  <lib desc="file#imm-gen.circ" name="9"/>
+  <lib desc="file#partial-load.circ" name="10"/>
+  <lib desc="file#branch-comp.circ" name="11"/>
   <lib desc="file#control-logic.circ" name="12"/>
   <main name="cpu"/>
   <options>
@@ -153,9 +153,9 @@
       <a name="label" val="s0"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="0" loc="(1360,670)" name="Constant">
+    <comp lib="0" loc="(1360,670)" name="Tunnel">
       <a name="facing" val="north"/>
-      <a name="value" val="0x0"/>
+      <a name="label" val="ALUSel"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(1410,190)" name="Pin">
@@ -467,8 +467,8 @@
       <a name="label" val="sp"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="10" loc="(910,760)" name="imm_gen"/>
-    <comp lib="11" loc="(2030,430)" name="partial_store"/>
+    <comp lib="10" loc="(2030,590)" name="partial_load"/>
+    <comp lib="11" loc="(1410,760)" name="branch_comp"/>
     <comp lib="12" loc="(840,930)" name="control_logic"/>
     <comp lib="3" loc="(210,530)" name="Adder">
       <a name="width" val="32"/>
@@ -506,10 +506,10 @@
     <comp lib="5" loc="(480,100)" name="Text">
       <a name="text" val="From IMEM"/>
     </comp>
-    <comp lib="6" loc="(2030,590)" name="partial_load"/>
+    <comp lib="6" loc="(2030,430)" name="partial_store"/>
     <comp lib="7" loc="(1400,540)" name="alu"/>
-    <comp lib="8" loc="(1410,760)" name="branch_comp"/>
-    <comp lib="9" loc="(910,430)" name="regfile"/>
+    <comp lib="8" loc="(910,430)" name="regfile"/>
+    <comp lib="9" loc="(910,760)" name="imm_gen"/>
     <wire from="(1050,190)" to="(1050,220)"/>
     <wire from="(1070,210)" to="(1120,210)"/>
     <wire from="(1140,190)" to="(1140,220)"/>
